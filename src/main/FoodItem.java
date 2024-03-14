@@ -3,14 +3,16 @@ package main;
 abstract class FoodItem {
 	private String name;
 	private float price;
-	private int prep_time = 0;
-	private int max_simultaneous_prep = 1;
+	private int prep_time;
+	private int max_simultaneous_prep;
 	
 	// CONSTRUCTORS
 	// Constructor with name and price parameter only
 	public FoodItem(String name, float price) {
 		this.name = name;
 		this.price = price;
+		this.prep_time = 0;
+		this.max_simultaneous_prep = 1;
 	}
 	
 	// Constructor with all attributes
