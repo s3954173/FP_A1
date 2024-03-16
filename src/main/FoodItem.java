@@ -56,7 +56,6 @@ abstract class FoodItem {
 		};
 	};
 	
-	// Setters methods below for flexibility
 	public void setPrepTime(int prep_time) {
 		if (prep_time < 0) {
 			System.out.println("Prep time must be 0 minutes or more");
