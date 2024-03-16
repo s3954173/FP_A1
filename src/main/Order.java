@@ -1,36 +1,42 @@
 package main;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-class Order {
-	private LinkedList<FoodItem> items;
+public class Order extends Meal{
+	private ArrayList<FoodItem> items;
+	private ArrayList<Meal> meals;
 	private int total_prep_time;
 	private float total_price;
 	
 	// CONSTRUCTOR
 	public Order() {
-		this.items = new LinkedList<>();
+		this.items = new ArrayList<FoodItem>();
+		this.meals = new ArrayList<Meal>();
 		this.total_prep_time = 0;
 		this.total_price = 0;
 	}
-	
+
 	// GETTERS
-	public LinkedList<FoodItem> getItems() {
-        return items;
+	public ArrayList<FoodItem> getOrderItems() {
+        return this.items;
+    } 
+	
+	public ArrayList<Meal> getMeals() {
+        return this.meals;
     } 
 	
 	public int getTotalPrepTime() {
-        return total_prep_time;
+        return this.total_prep_time;
     }
 	
-	public double getTotalPrice() {
-        return total_price;
+	public float getTotalPrice() {
+        return this.total_price;
     }
 	// SETTERS
 	public void addItems(FoodItem item) {
 		this.items.add(item);
 	} 
 	
-	//TODO Calculate Total Prep time appropriately
+	// TODO Optimise Code
 	public void setTotalPrepTime(int cook_fries_counter) {
 		int burrito_quantity = countItemQuantity("Burrito");
 		
@@ -56,22 +62,35 @@ class Order {
 	}
 	
 	public void setTotalPrice() {
-		// Loop through items and add the total prices
 		float total_price = 0;
+		
+		// FoodItem Loop
 		for(FoodItem item:this.getItems()) {
 			total_price += item.getPrice();
 		};
+		
+		// Meals Loop
+		for(Meal meal:this.getMeals()) {
+			total_price += meal.getTotalPrice();
+		}
+		
 		this.total_price = total_price;
 	}
 	
-	// Custom method
+	// ADDITIONAL METHODS
 	public int countItemQuantity(String item_name) {
 		int quantity = 0;
+		
+		// FoodItem Loop to find specific FoodItem
 		for (FoodItem item:this.getItems()) {
 			if (item.getName().equals(item_name)) {
 				quantity++;
 			}
 		};
+		
+		// Add quantity of meals to item quantity
+		quantity += this.getMeals().size();
+		
 		return quantity;
 	}
 

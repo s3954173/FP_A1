@@ -1,6 +1,6 @@
 package main;
 
-abstract class FoodItem {
+public abstract class FoodItem {
 	private String name;
 	private float price;
 	private int prep_time;
@@ -74,23 +74,22 @@ abstract class FoodItem {
 }
 
 class Burrito extends FoodItem{
-	public Burrito(String name, float price, int prepTime, int maxSimultaneousPrep) {
+	public Burrito() {
 		super("Burrito", 7.0f, 9, 2);
 		// $7, 9min prep time, prep 2 at same time
 	}
 }
 
 class Fries extends FoodItem{
-	public Fries(String name, float price, int prepTime, int maxSimultaneousPrep) {
+	public Fries() {
 		super("Fries", 4.0f, 8, 5);
 		// $4, 8min prep time, prep 5 at same time
 	}
 }
 
 class Soda extends FoodItem{
-	public Soda(String name, float price) {
+	public Soda() {
 		super("Soda", 2.50f);
 		// $2.50
 	}
 }
-
