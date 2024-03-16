@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Queue;
+
 public abstract class FoodItem {
 	private String name;
 	private float price;
@@ -78,6 +80,7 @@ class Burrito extends FoodItem{
 		super("Burrito", 7.0f, 9, 2);
 		// $7, 9min prep time, prep 2 at same time
 	}
+	
 }
 
 class Fries extends FoodItem{
@@ -85,8 +88,6 @@ class Fries extends FoodItem{
 		super("Fries", 4.0f, 8, 5);
 		// $4, 8min prep time, prep 5 at same time
 	}
-	
-	
 }
 
 class Soda extends FoodItem{
@@ -94,4 +95,5 @@ class Soda extends FoodItem{
 		super("Soda", 2.50f);
 		// $2.50
 	}
+	
 }

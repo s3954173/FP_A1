@@ -43,29 +43,25 @@ public class Order extends Meal {
 	}
 
 	// TODO Optimise Code
-	public void setTotalPrepTime(int cook_fries_counter) {
+	public void setTotalPrepTime(int cook_fries_counter, FoodItem burrito, FoodItem fries) {
 		int burrito_quantity = countItemQuantity("Burrito");
-
+		System.out.println(burrito_quantity);
+		
+		//TODO Need to update it so that it doesn't check for the Burrito or Fries instance
+		
 		// Checks which counter is higher to get the correct total prep time
 		if (burrito_quantity > cook_fries_counter) {
-			for (FoodItem item : this.getOrderItems()) {
-				if (item instanceof Burrito) {
-					// Burrito Prep Time = Math.ceil(b/2) * 9 min
-					this.total_prep_time = (int) Math.ceil(burrito_quantity / item.getMaxSimultaneousPrep())
-							* item.getPrepTime();
-					break;
-				}
-			}
+
+			// Burrito Prep Time = Math.ceil(b/2) * 9 min
+			this.total_prep_time = (int) Math.ceil(
+					(double) burrito_quantity / burrito.getMaxSimultaneousPrep())
+					* burrito.getPrepTime();
+	
 		} else {
-			for (FoodItem item : this.getOrderItems()) {
-				if (item instanceof Fries) {
-					// Fries Prep Time = cook_fries_counter * 8 min
-					this.total_prep_time = (int) cook_fries_counter * item.getPrepTime();
-					break;
-				}
-			}
-		}
-		;
+			// Fries Prep Time = cook_fries_counter * 8 min
+			this.total_prep_time = cook_fries_counter * fries.getPrepTime();
+			
+		};
 
 	}
 
@@ -81,13 +77,13 @@ public class Order extends Meal {
 		// Meals Loop
 		for (Meal meal : this.getMeals()) {
 			total_price += meal.getTotalPrice();
-		}
-		;
+		};
 
 		this.total_price = total_price;
 	}
 
 	// ADDITIONAL METHODS
+	//TODO Create method to get array sizes of items and meals
 	public int countItemQuantity(String item_name) {
 		int quantity = 0;
 
@@ -96,8 +92,7 @@ public class Order extends Meal {
 			if (item.getName().equals(item_name)) {
 				quantity++;
 			}
-		}
-		;
+		};
 
 		// Add quantity of meals to item quantity
 		quantity += this.getMeals().size();
@@ -108,11 +103,8 @@ public class Order extends Meal {
 	public void printOrderTotal() {
 		// Show order info with inclusion of meal
 		int meal_quantity = this.getMeals().size();
-		int[] items_quantity = { 
-				countItemQuantity("Burrito") - meal_quantity,
-				countItemQuantity("Fries") - meal_quantity, 
-				countItemQuantity("Soda") - meal_quantity, 
-				meal_quantity };
+		int[] items_quantity = { countItemQuantity("Burrito") - meal_quantity,
+				countItemQuantity("Fries") - meal_quantity, countItemQuantity("Soda") - meal_quantity, meal_quantity };
 
 		String[] item_names = { "Burrito", "Fries", "Soda", "Meal" };
 
@@ -128,5 +120,5 @@ public class Order extends Meal {
 		}
 		System.out.printf("is $%.2f\n ", this.getTotalPrice());
 	}
-
+	
 }
