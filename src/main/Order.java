@@ -44,17 +44,15 @@ public class Order extends Meal {
 
 	// TODO Optimise Code
 	public void setTotalPrepTime(int cook_fries_counter, FoodItem burrito, FoodItem fries) {
-		int burrito_quantity = countItemQuantity("Burrito");
-		
+//		int burrito_quantity = countItemQuantity("Burrito");
+		int burrito_cook_counter = (int) Math.ceil((double) countItemQuantity("Burrito") / burrito.getMaxSimultaneousPrep());
 		//TODO Need to update it so that it doesn't check for the Burrito or Fries instance
 		
 		// Checks which counter is higher to get the correct total prep time
-		if (burrito_quantity > cook_fries_counter) {
+		if (burrito_cook_counter > cook_fries_counter) {
 
 			// Burrito Prep Time = Math.ceil(b/2) * 9 min
-			this.total_prep_time = (int) Math.ceil(
-					(double) burrito_quantity / burrito.getMaxSimultaneousPrep())
-					* burrito.getPrepTime();
+			this.total_prep_time = burrito_cook_counter	* burrito.getPrepTime();
 	
 		} else {
 			// Fries Prep Time = cook_fries_counter * 8 min

@@ -83,11 +83,37 @@ class Burrito extends FoodItem{
 	
 }
 
-class Fries extends FoodItem{
+class Fries extends FoodItem implements Kitchen{
 	public Fries() {
 		super("Fries", 4.0f, 8, 5);
 		// $4, 8min prep time, prep 5 at same time
 	}
+	
+	
+	@Override
+    public void prepFood() {
+        // This method is replaced by the prepFries static method
+    }
+	
+	public static int prepFries(FoodItem fries, Queue<FoodItem> warming_tray, Order order, int food_quantity) {
+		int current_cook_counter = 0;
+		
+		// Check if warming tray has enough fries
+		if (food_quantity > warming_tray.size()) {
+			// Cook Fries and tally the amount of times fries need to be cooked
+			current_cook_counter = (int) Math.ceil((double) food_quantity / 5);
+			int fries_batch = current_cook_counter * 5;
+			for (int i = 0; i < fries_batch; i++) {
+				warming_tray.add(fries);
+			}
+			
+			//Print out Cooking Fries
+			System.out.println("Cooking fries; please be patient");
+			System.out.printf("%d serves of fries left for next order\n", (warming_tray.size() - food_quantity));
+		}
+
+		return current_cook_counter;
+	};
 }
 
 class Soda extends FoodItem{

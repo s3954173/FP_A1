@@ -107,7 +107,7 @@ public class Menu {
 					food_quantity = chooseFoodAmount(fries.getName());
 					
 					// Will either cook new fries or grab fries the warming tray
-					cook_fries_counter += prepFries(fries, warming_tray, order, food_quantity);
+					cook_fries_counter += Fries.prepFries(fries, warming_tray, order, food_quantity);
 					System.out.println("Counter: " + cook_fries_counter);
 				    
 //					// Check if warming tray has enough fries
@@ -144,7 +144,7 @@ public class Menu {
 					food_quantity = chooseFoodAmount("Meal");
 					
 					// Cook new fries if warming tray doesn't have enough
-					cook_fries_counter += prepFries(fries, warming_tray, order, food_quantity);
+					cook_fries_counter += Fries.prepFries(fries, warming_tray, order, food_quantity);
 					System.out.println("Counter: " + cook_fries_counter);
 
 					// Add meal to order and remove fries from warming tray
@@ -206,10 +206,10 @@ public class Menu {
 		do {
 			switch (name) {
 			case "Fries":
-				System.out.print("How many serves of fries would you like to buy:");
+				System.out.print("\nHow many serves of fries would you like to buy:");
 				break;
 			default:
-				System.out.printf("How many %ss would you like to buy: ", name);
+				System.out.printf("\nHow many %ss would you like to buy: ", name);
 				break;
 			}
 
@@ -247,25 +247,24 @@ public class Menu {
 		System.out.print("Please select: ");
 	}
 	
-	public static int prepFries(FoodItem fries, Queue<FoodItem> warming_tray, Order order, int food_quantity) {
-		int current_cook_counter = 0;
-		// Check if warming tray has enough fries
-		if (food_quantity > warming_tray.size()) {
-			// Cook Fries and tally the amount of times fries need to be cooked
-			current_cook_counter = (int) Math.ceil((double) food_quantity / 5);
-//			System.out.println(current_cook_counter);
-//			cook_fries_counter += current_cook_counter;
-			int fries_batch = current_cook_counter * 5;
-			for (int i = 0; i < fries_batch; i++) {
-				warming_tray.add(fries);
-			}
-			
-			//Print out Cooking Fries
-			System.out.println("Cooking fries; please be patient");
-			System.out.printf("%d serves of fries left for next order\n", (warming_tray.size() - food_quantity));
-		}
-
-		return current_cook_counter;
-	};
+//	public static int prepFries(FoodItem fries, Queue<FoodItem> warming_tray, Order order, int food_quantity) {
+//		int current_cook_counter = 0;
+//		
+//		// Check if warming tray has enough fries
+//		if (food_quantity > warming_tray.size()) {
+//			// Cook Fries and tally the amount of times fries need to be cooked
+//			current_cook_counter = (int) Math.ceil((double) food_quantity / 5);
+//			int fries_batch = current_cook_counter * 5;
+//			for (int i = 0; i < fries_batch; i++) {
+//				warming_tray.add(fries);
+//			}
+//			
+//			//Print out Cooking Fries
+//			System.out.println("Cooking fries; please be patient");
+//			System.out.printf("%d serves of fries left for next order\n", (warming_tray.size() - food_quantity));
+//		}
+//
+//		return current_cook_counter;
+//	};
 
 }
