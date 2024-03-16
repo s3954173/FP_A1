@@ -45,7 +45,6 @@ public class Order extends Meal {
 	// TODO Optimise Code
 	public void setTotalPrepTime(int cook_fries_counter, FoodItem burrito, FoodItem fries) {
 		int burrito_quantity = countItemQuantity("Burrito");
-		System.out.println(burrito_quantity);
 		
 		//TODO Need to update it so that it doesn't check for the Burrito or Fries instance
 		

@@ -20,7 +20,6 @@ public class Menu {
 			// Order
 			case 'a':
 				orders.add(orderFood(warming_tray));
-				System.out.println(warming_tray.size());
 				break;
 			// Show Sales Report
 			case 'b':
@@ -108,7 +107,8 @@ public class Menu {
 					food_quantity = chooseFoodAmount(fries.getName());
 					
 					// Will either cook new fries or grab fries the warming tray
-					cook_fries_counter += prepFries(fries, warming_tray, order, food_quantity, cook_fries_counter);
+					cook_fries_counter += prepFries(fries, warming_tray, order, food_quantity);
+					System.out.println("Counter: " + cook_fries_counter);
 				    
 //					// Check if warming tray has enough fries
 //					if (food_quantity > warming_tray.size()) {
@@ -130,6 +130,8 @@ public class Menu {
 						warming_tray.remove(fries);
 						order.addItem(fries);
 					}
+					
+					System.out.println("Warming Tray: " + warming_tray.size());
 
 					break;
 				case 3:
@@ -142,7 +144,8 @@ public class Menu {
 					food_quantity = chooseFoodAmount("Meal");
 					
 					// Cook new fries if warming tray doesn't have enough
-					cook_fries_counter += prepFries(fries, warming_tray, order, food_quantity, cook_fries_counter);
+					cook_fries_counter += prepFries(fries, warming_tray, order, food_quantity);
+					System.out.println("Counter: " + cook_fries_counter);
 
 					// Add meal to order and remove fries from warming tray
 					for (int i = 0; i < food_quantity; i++) {
@@ -244,12 +247,15 @@ public class Menu {
 		System.out.print("Please select: ");
 	}
 	
-	public static int prepFries(FoodItem fries, Queue<FoodItem> warming_tray, Order order, int food_quantity, int cook_fries_counter) {
+	public static int prepFries(FoodItem fries, Queue<FoodItem> warming_tray, Order order, int food_quantity) {
+		int current_cook_counter = 0;
 		// Check if warming tray has enough fries
 		if (food_quantity > warming_tray.size()) {
 			// Cook Fries and tally the amount of times fries need to be cooked
-			cook_fries_counter += Math.ceil((double) food_quantity / 5);
-			int fries_batch = cook_fries_counter * 5;
+			current_cook_counter = (int) Math.ceil((double) food_quantity / 5);
+//			System.out.println(current_cook_counter);
+//			cook_fries_counter += current_cook_counter;
+			int fries_batch = current_cook_counter * 5;
 			for (int i = 0; i < fries_batch; i++) {
 				warming_tray.add(fries);
 			}
@@ -259,7 +265,7 @@ public class Menu {
 			System.out.printf("%d serves of fries left for next order\n", (warming_tray.size() - food_quantity));
 		}
 
-		return cook_fries_counter;
+		return current_cook_counter;
 	};
 
 }
