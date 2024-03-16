@@ -10,17 +10,13 @@ public class Menu {
 		// Console Menu Start and instantiate menu_input to create While Loop
 		char menu_input = 'e';
 		ArrayList<Order> orders = new ArrayList<Order>();
-		Burrito burrito = new Burrito();
-		Fries fries = new Fries();
-		Soda soda = new Soda();
-		Meal meal = new Meal();
 
 		printTitle();
 		while (menu_input != 'd') {
 			switch (menuOptions()) {
 			// Order
 			case 'a':
-				Order new_order = orderFood(burrito, fries, soda, meal);
+				Order new_order = orderFood();
 				orders.add(new_order);
 				
 				break;
@@ -73,11 +69,17 @@ public class Menu {
 			} else {
 				System.out.println("Please only provide a single character option. a, b, c, d");
 			}
+			menu_input.next();
 		} while (true);
 
 	}
 
-	public static Order orderFood(Burrito burrito, Fries fries, Soda soda, Meal meal) {
+	public static Order orderFood() {
+		FoodItem burrito = new Burrito();
+		FoodItem fries = new Fries();
+		FoodItem soda = new Soda();
+		Meal meal = new Meal();
+		
 		Order order = new Order();
 		int user_choice = -1;
 
@@ -86,8 +88,9 @@ public class Menu {
 
 		Scanner menu_input = new Scanner(System.in);
 
-		printOrderOptions();
+		
 		do {
+			printOrderOptions();
 			// Take user input and error handling for non-int inputs
 			try {
 				user_choice = menu_input.nextInt();
@@ -119,13 +122,18 @@ public class Menu {
 				menu_input.next(); // Clear the invalid input from the scanner
 			}
 
+
 		} while (user_choice != 5);
+		
+		for (FoodItem item: order.getOrderItems()) {
+			System.out.println(item.getName());
+		}
 		
 		// Finalise Order Details
 		order.setTotalPrice();
 		order.setTotalPrepTime(cook_fries_counter);
 		order.printOrderTotal();
-		int money = 0;
+		float money = 0f;
 		
 		// User enters in amount to pay for order
 		do {
@@ -136,7 +144,7 @@ public class Menu {
 				// Resolve Order if payable
 				if (money >= order.getTotalPrice()) {
 
-					System.out.printf("Change returned $%d\n", (money - order.getTotalPrice()));
+					System.out.printf("Change returned $%.2f\n", (money - order.getTotalPrice()));
 					System.out.printf("Time taken: %d minutes\n\n", order.getTotalPrepTime());
 					
 				}

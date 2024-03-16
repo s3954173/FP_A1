@@ -48,7 +48,7 @@ public class Order extends Meal {
 
 		// Checks which counter is higher to get the correct total prep time
 		if (burrito_quantity > cook_fries_counter) {
-			for (FoodItem item : this.getItems()) {
+			for (FoodItem item : this.getOrderItems()) {
 				if (item instanceof Burrito) {
 					// Burrito Prep Time = Math.ceil(b/2) * 9 min
 					this.total_prep_time = (int) Math.ceil(burrito_quantity / item.getMaxSimultaneousPrep())
@@ -57,7 +57,7 @@ public class Order extends Meal {
 				}
 			}
 		} else {
-			for (FoodItem item : this.getItems()) {
+			for (FoodItem item : this.getOrderItems()) {
 				if (item instanceof Fries) {
 					// Fries Prep Time = cook_fries_counter * 8 min
 					this.total_prep_time = (int) cook_fries_counter * item.getPrepTime();
@@ -70,18 +70,17 @@ public class Order extends Meal {
 	}
 
 	public void setTotalPrice() {
-		float total_price = 0;
+		float total_price = 0f;
 
 		// FoodItem Loop
-		for (FoodItem item : this.getItems()) {
+		for (FoodItem item : this.getOrderItems()) {
 			total_price += item.getPrice();
-		}
-		;
+		};
 
 		// Meals Loop
 		for (Meal meal : this.getMeals()) {
 			total_price += meal.getTotalPrice();
-		}
+		};
 	
 
 		this.total_price = total_price;
@@ -92,7 +91,7 @@ public class Order extends Meal {
 		int quantity = 0;
 
 		// FoodItem Loop to find specific FoodItem
-		for (FoodItem item : this.getItems()) {
+		for (FoodItem item : this.getOrderItems()) {
 			if (item.getName().equals(item_name)) {
 				quantity++;
 			}
@@ -114,11 +113,11 @@ public class Order extends Meal {
 		// Loop through to print each food item in Order if it exists.
 		for (int i = 0; i < 3; i++) {
 			if (items_quantity[i] > 0) {
-				System.out.print(items_quantity[i] + item_names[i] + ", ");
+				System.out.printf("%d %s, ",items_quantity[i], item_names[i]);
 			}
 		}
 
-		System.out.println("is " + this.getTotalPrice());
+		System.out.printf("is $%.2f\n ", this.getTotalPrice());
 	}
 
 }

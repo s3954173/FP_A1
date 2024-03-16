@@ -15,7 +15,7 @@ public class Meal {
         // Set Meal attributes
         this.items = new FoodItem[]{burrito, fries, soda};
 		this.discount = 3;
-		this.setTotalPrice();
+		this.total_price = 10.5f;
 	}
 	
 	// TODO: Create 2nd Constructor??
