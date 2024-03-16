@@ -3,6 +3,8 @@ package main;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Menu {
 
@@ -10,15 +12,15 @@ public class Menu {
 		// Console Menu Start and instantiate menu_input to create While Loop
 		char menu_input = 'e';
 		ArrayList<Order> orders = new ArrayList<Order>();
+		Queue<FoodItem> warming_tray = new LinkedList<FoodItem>();
 
 		printTitle();
 		while (menu_input != 'd') {
 			switch (menuOptions()) {
 			// Order
 			case 'a':
-				Order new_order = orderFood();
-				orders.add(new_order);
-
+				orders.add(orderFood(warming_tray));
+				System.out.println(warming_tray.size());
 				break;
 			// Show Sales Report
 			case 'b':
@@ -67,14 +69,14 @@ public class Menu {
 					break;
 				}
 			} else {
-				System.out.println("Please only provide a single character option. a, b, c, d");
+				System.out.print("Please only provide a single character option. a, b, c, d");
 			}
-			menu_input.next();
+
 		} while (true);
 
 	}
 
-	public static Order orderFood() {
+	public static Order orderFood(Queue<FoodItem> warming_tray) {
 		FoodItem burrito = new Burrito();
 		FoodItem fries = new Fries();
 		FoodItem soda = new Soda();
@@ -94,31 +96,48 @@ public class Menu {
 			try {
 				user_choice = menu_input.nextInt();
 				int food_quantity = 0;
-				//TODO Optimise code
+				// TODO Optimise code
 				switch (user_choice) {
 				case 1:
 					food_quantity = chooseFoodAmount(burrito.getName());
-					for(int i = 0; i < food_quantity; i++) {
+					for (int i = 0; i < food_quantity; i++) {
 						order.addItem(burrito);
 					}
 					break;
 				case 2:
-					// TODO Fries code for warming tray
 					food_quantity = chooseFoodAmount(fries.getName());
-					for(int i = 0; i < food_quantity; i++) {
+
+					// Check if warming tray has enough fries
+					if (food_quantity > warming_tray.size()) {
+						// Cook Fries and tally the amount of times fries need to be cooked
+						cook_fries_counter += Math.ceil((double) food_quantity / 5);
+						int fries_batch = cook_fries_counter * 5;
+						System.out.println(cook_fries_counter);
+						for (int i = 0; i < fries_batch; i++) {
+							warming_tray.add(fries);
+						}
+						
+						//Print out Cooking Fries
+						System.out.println("Cooking fries; please be patient");
+						System.out.printf("%d serves of fries left for next order\n", (warming_tray.size() - food_quantity));
+					}
+
+					// Add fries from warming_tray
+					for (int i = 0; i < food_quantity; i++) {
+						warming_tray.remove(fries);
 						order.addItem(fries);
 					}
-					cook_fries_counter++;
+
 					break;
 				case 3:
 					food_quantity = chooseFoodAmount(soda.getName());
-					for(int i = 0; i < food_quantity; i++) {
+					for (int i = 0; i < food_quantity; i++) {
 						order.addItem(soda);
 					}
 					break;
 				case 4:
 					food_quantity = chooseFoodAmount("Meal");
-					for(int i = 0; i < food_quantity; i++) {
+					for (int i = 0; i < food_quantity; i++) {
 						order.addMeal(meal);
 					}
 					break;
@@ -135,10 +154,6 @@ public class Menu {
 
 		} while (user_choice != 5);
 
-		for (FoodItem item : order.getOrderItems()) {
-			System.out.println(item.getName());
-		}
-
 		// Finalise Order Details
 		order.setTotalPrice();
 		order.setTotalPrepTime(cook_fries_counter);
@@ -149,7 +164,7 @@ public class Menu {
 		do {
 			try {
 				System.out.print("Please enter money: ");
-				money = menu_input.nextInt();
+				money = menu_input.nextFloat();
 
 				// Resolve Order if payable
 				if (money >= order.getTotalPrice()) {
@@ -164,8 +179,8 @@ public class Menu {
 				}
 
 			} catch (InputMismatchException e) {
-				// Handle the case where the input is not an integer
-				System.out.println("Please enter a valid integer amount");
+				// Handle the case where the input is not a number
+				System.out.println("Please enter a valid dollar amount");
 				menu_input.next(); // Clear the invalid input from the scanner
 			}
 		} while (money < order.getTotalPrice());
@@ -185,21 +200,20 @@ public class Menu {
 				System.out.printf("How many %ss would you like to buy: ", name);
 				break;
 			}
-			
+
 			try {
 				quantity = quantity_input.nextInt();
 				if (quantity < 1) {
 					System.out.println("Please enter a valid quantity of 1 or more");
 				}
-			}
-			catch (InputMismatchException e) {
+			} catch (InputMismatchException e) {
 				// Handle the case where the input is not an integer
 				System.out.println("Please enter a valid integer amount");
 				quantity_input.next(); // Clear the invalid input from the scanner
 			}
-			
+
 		} while (quantity < 1);
-		
+
 		return quantity;
 	}
 

@@ -85,6 +85,8 @@ class Fries extends FoodItem{
 		super("Fries", 4.0f, 8, 5);
 		// $4, 8min prep time, prep 5 at same time
 	}
+	
+	
 }
 
 class Soda extends FoodItem{
