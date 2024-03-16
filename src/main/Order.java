@@ -32,6 +32,15 @@ public class Order extends Meal {
 	public float getTotalPrice() {
 		return this.total_price;
 	}
+	
+	public int getOrderItemsSize() {
+		return this.getOrderItems().size();
+	}
+	
+	public int getMealItemsSize() {
+		return this.getMeals().size();
+	}
+	//TODO Create method to get array sizes of items and meals
 
 	// SETTERS
 	public void addItem(FoodItem item) {
@@ -42,22 +51,15 @@ public class Order extends Meal {
 		this.meals.add(meal);
 	}
 
-	// TODO Optimise Code
 	public void setTotalPrepTime(int cook_fries_counter, FoodItem burrito, FoodItem fries) {
-//		int burrito_quantity = countItemQuantity("Burrito");
 		int burrito_cook_counter = (int) Math.ceil((double) countItemQuantity("Burrito") / burrito.getMaxSimultaneousPrep());
-		//TODO Need to update it so that it doesn't check for the Burrito or Fries instance
 		
 		// Checks which counter is higher to get the correct total prep time
 		if (burrito_cook_counter > cook_fries_counter) {
-
-			// Burrito Prep Time = Math.ceil(b/2) * 9 min
 			this.total_prep_time = burrito_cook_counter	* burrito.getPrepTime();
 	
 		} else {
-			// Fries Prep Time = cook_fries_counter * 8 min
 			this.total_prep_time = cook_fries_counter * fries.getPrepTime();
-			
 		};
 
 	}
@@ -68,8 +70,7 @@ public class Order extends Meal {
 		// FoodItem Loop
 		for (FoodItem item : this.getOrderItems()) {
 			total_price += item.getPrice();
-		}
-		;
+		};
 
 		// Meals Loop
 		for (Meal meal : this.getMeals()) {
@@ -80,7 +81,7 @@ public class Order extends Meal {
 	}
 
 	// ADDITIONAL METHODS
-	//TODO Create method to get array sizes of items and meals
+	
 	public int countItemQuantity(String item_name) {
 		int quantity = 0;
 
@@ -92,14 +93,14 @@ public class Order extends Meal {
 		};
 
 		// Add quantity of meals to item quantity
-		quantity += this.getMeals().size();
+		quantity += getMealItemsSize();
 
 		return quantity;
 	}
 
 	public void printOrderTotal() {
 		// Show order info with inclusion of meal
-		int meal_quantity = this.getMeals().size();
+		int meal_quantity = getMealItemsSize();
 		int[] items_quantity = { countItemQuantity("Burrito") - meal_quantity,
 				countItemQuantity("Fries") - meal_quantity, countItemQuantity("Soda") - meal_quantity, meal_quantity };
 
