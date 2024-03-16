@@ -75,13 +75,14 @@ public class Order extends Meal {
 		// FoodItem Loop
 		for (FoodItem item : this.getOrderItems()) {
 			total_price += item.getPrice();
-		};
+		}
+		;
 
 		// Meals Loop
 		for (Meal meal : this.getMeals()) {
 			total_price += meal.getTotalPrice();
-		};
-	
+		}
+		;
 
 		this.total_price = total_price;
 	}
@@ -105,18 +106,26 @@ public class Order extends Meal {
 	}
 
 	public void printOrderTotal() {
-		int[] items_quantity = { countItemQuantity("Burrito"), countItemQuantity("Fries"), countItemQuantity("Soda") };
-		String[] item_names = { "Burrito", "Fries", "Soda" };
+		// Show order info with inclusion of meal
+		int meal_quantity = this.getMeals().size();
+		int[] items_quantity = { 
+				countItemQuantity("Burrito") - meal_quantity,
+				countItemQuantity("Fries") - meal_quantity, 
+				countItemQuantity("Soda") - meal_quantity, 
+				meal_quantity };
 
+		String[] item_names = { "Burrito", "Fries", "Soda", "Meal" };
+
+		// Print out "Total for x, x, x, x is $xx.xx
 		System.out.print("Total for ");
-
 		// Loop through to print each food item in Order if it exists.
-		for (int i = 0; i < 3; i++) {
-			if (items_quantity[i] > 0) {
-				System.out.printf("%d %s, ",items_quantity[i], item_names[i]);
-			}
-		}
+		for (int i = 0; i < 4; i++) {
 
+			if (items_quantity[i] > 0) {
+				System.out.printf("%d %s, ", items_quantity[i], item_names[i]);
+			}
+
+		}
 		System.out.printf("is $%.2f\n ", this.getTotalPrice());
 	}
 

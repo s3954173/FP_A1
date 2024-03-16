@@ -18,7 +18,7 @@ public class Menu {
 			case 'a':
 				Order new_order = orderFood();
 				orders.add(new_order);
-				
+
 				break;
 			// Show Sales Report
 			case 'b':
@@ -79,7 +79,7 @@ public class Menu {
 		FoodItem fries = new Fries();
 		FoodItem soda = new Soda();
 		Meal meal = new Meal();
-		
+
 		Order order = new Order();
 		int user_choice = -1;
 
@@ -88,28 +88,39 @@ public class Menu {
 
 		Scanner menu_input = new Scanner(System.in);
 
-		
 		do {
 			printOrderOptions();
 			// Take user input and error handling for non-int inputs
 			try {
 				user_choice = menu_input.nextInt();
-
+				int food_quantity = 0;
+				//TODO Optimise code
 				switch (user_choice) {
 				case 1:
-					order.addItem(burrito);
+					food_quantity = chooseFoodAmount(burrito.getName());
+					for(int i = 0; i < food_quantity; i++) {
+						order.addItem(burrito);
+					}
 					break;
 				case 2:
 					// TODO Fries code for warming tray
-					order.addItem(fries);
+					food_quantity = chooseFoodAmount(fries.getName());
+					for(int i = 0; i < food_quantity; i++) {
+						order.addItem(fries);
+					}
 					cook_fries_counter++;
 					break;
 				case 3:
-					order.addItem(soda);
+					food_quantity = chooseFoodAmount(soda.getName());
+					for(int i = 0; i < food_quantity; i++) {
+						order.addItem(soda);
+					}
 					break;
 				case 4:
-					// TODO add meal setter method
-					order.addMeal(meal);
+					food_quantity = chooseFoodAmount("Meal");
+					for(int i = 0; i < food_quantity; i++) {
+						order.addMeal(meal);
+					}
 					break;
 				case 5:
 					break;
@@ -118,41 +129,40 @@ public class Menu {
 				}
 			} catch (InputMismatchException e) {
 				// Handle the case where the input is not an integer
-				System.out.println("Please enter a valid integer between 1-5");
+				System.out.println("Please enter a valid integer");
 				menu_input.next(); // Clear the invalid input from the scanner
 			}
 
-
 		} while (user_choice != 5);
-		
-		for (FoodItem item: order.getOrderItems()) {
+
+		for (FoodItem item : order.getOrderItems()) {
 			System.out.println(item.getName());
 		}
-		
+
 		// Finalise Order Details
 		order.setTotalPrice();
 		order.setTotalPrepTime(cook_fries_counter);
 		order.printOrderTotal();
 		float money = 0f;
-		
+
 		// User enters in amount to pay for order
 		do {
 			try {
 				System.out.print("Please enter money: ");
 				money = menu_input.nextInt();
-				
+
 				// Resolve Order if payable
 				if (money >= order.getTotalPrice()) {
 
 					System.out.printf("Change returned $%.2f\n", (money - order.getTotalPrice()));
 					System.out.printf("Time taken: %d minutes\n\n", order.getTotalPrepTime());
-					
+
 				}
 				// Tell user to provide money enough to pay for order
 				else {
 					System.out.println("Sorry, that's not enough to pay for order\n");
 				}
-				
+
 			} catch (InputMismatchException e) {
 				// Handle the case where the input is not an integer
 				System.out.println("Please enter a valid integer amount");
@@ -161,6 +171,36 @@ public class Menu {
 		} while (money < order.getTotalPrice());
 
 		return order;
+	}
+
+	public static int chooseFoodAmount(String name) {
+		Scanner quantity_input = new Scanner(System.in);
+		int quantity = 0;
+		do {
+			switch (name) {
+			case "Fries":
+				System.out.print("How many serves of fries would you like to buy:");
+				break;
+			default:
+				System.out.printf("How many %ss would you like to buy: ", name);
+				break;
+			}
+			
+			try {
+				quantity = quantity_input.nextInt();
+				if (quantity < 1) {
+					System.out.println("Please enter a valid quantity of 1 or more");
+				}
+			}
+			catch (InputMismatchException e) {
+				// Handle the case where the input is not an integer
+				System.out.println("Please enter a valid integer amount");
+				quantity_input.next(); // Clear the invalid input from the scanner
+			}
+			
+		} while (quantity < 1);
+		
+		return quantity;
 	}
 
 	public static void printMenuOptions() {
