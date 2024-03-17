@@ -80,7 +80,6 @@ class Burrito extends FoodItem{
 		super("Burrito", 7.0f, 9, 2);
 		// $7, 9min prep time, prep 2 at same time
 	}
-	
 }
 
 class Fries extends FoodItem implements Kitchen{
@@ -109,7 +108,6 @@ class Fries extends FoodItem implements Kitchen{
 			
 			//Print out Cooking Fries
 			System.out.println("Cooking fries; please be patient");
-			System.out.printf("%d serves of fries left for next order\n", (warming_tray.size() - food_quantity));
 		}
 
 		return current_cook_counter;

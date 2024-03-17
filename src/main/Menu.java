@@ -9,17 +9,23 @@ import java.util.Queue;
 public class Menu {
 
 	public static void main(String[] args) {
-		// Console Menu Start and instantiate menu_input to create While Loop
+		// Instantiate FoodItem, Meal, Orders and Warming Tray objects
 		char menu_input = 'e';
 		ArrayList<Order> orders = new ArrayList<Order>();
+		FoodItem burrito = new Burrito();
+		FoodItem fries = new Fries();
+		FoodItem soda = new Soda();
+		Meal meal = new Meal();
 		Queue<FoodItem> warming_tray = new LinkedList<FoodItem>();
-
+		
+		// Console Menu Start and instantiate menu_input to create While Loop
 		printTitle();
 		while (menu_input != 'd') {
 			switch (menuOptions()) {
 			// Order
 			case 'a':
-				orders.add(orderFood(warming_tray));
+				orders.add(orderFood(warming_tray, burrito, fries, soda, meal));
+				System.out.println(orders);
 				break;
 			// Show Sales Report
 			case 'b':
@@ -75,11 +81,8 @@ public class Menu {
 
 	}
 
-	public static Order orderFood(Queue<FoodItem> warming_tray) {
-		FoodItem burrito = new Burrito();
-		FoodItem fries = new Fries();
-		FoodItem soda = new Soda();
-		Meal meal = new Meal();
+	public static Order orderFood(Queue<FoodItem> warming_tray, FoodItem burrito, FoodItem fries, FoodItem soda, Meal meal) {
+
 
 		Order order = new Order();
 		int user_choice = -1;
@@ -108,30 +111,13 @@ public class Menu {
 					
 					// Will either cook new fries or grab fries the warming tray
 					cook_fries_counter += Fries.prepFries(fries, warming_tray, order, food_quantity);
-					System.out.println("Counter: " + cook_fries_counter);
-				    
-//					// Check if warming tray has enough fries
-//					if (food_quantity > warming_tray.size()) {
-//						// Cook Fries and tally the amount of times fries need to be cooked
-//						cook_fries_counter += Math.ceil((double) food_quantity / 5);
-//						int fries_batch = cook_fries_counter * 5;
-//						System.out.println(cook_fries_counter);
-//						for (int i = 0; i < fries_batch; i++) {
-//							warming_tray.add(fries);
-//						}
-//						
-//						//Print out Cooking Fries
-//						System.out.println("Cooking fries; please be patient");
-//						System.out.printf("%d serves of fries left for next order\n", (warming_tray.size() - food_quantity));
-//					}
 
 					// Add fries from warming_tray
 					for (int i = 0; i < food_quantity; i++) {
 						warming_tray.remove(fries);
 						order.addItem(fries);
 					}
-					
-					System.out.println("Warming Tray: " + warming_tray.size());
+					System.out.printf("%d serves of fries left for next order\n", warming_tray.size());
 
 					break;
 				case 3:
@@ -152,6 +138,8 @@ public class Menu {
 			            warming_tray.remove(fries);
 						order.addMeal(meal);
 					}
+					System.out.printf("%d serves of fries left for next order\n", warming_tray.size());
+
 					break;
 				case 5:
 					break;

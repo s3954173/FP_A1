@@ -52,6 +52,8 @@ public class Order extends Meal {
 	}
 
 	public void setTotalPrepTime(int cook_fries_counter, FoodItem burrito, FoodItem fries) {
+		
+		
 		int burrito_cook_counter = (int) Math.ceil((double) countItemQuantity("Burrito") / burrito.getMaxSimultaneousPrep());
 		
 		// Checks which counter is higher to get the correct total prep time
