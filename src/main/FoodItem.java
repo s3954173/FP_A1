@@ -75,11 +75,12 @@ public abstract class FoodItem {
 	}
 }
 
-class Burrito extends FoodItem{
+class Burrito extends FoodItem {
 	public Burrito() {
 		super("Burrito", 7.0f, 9, 2);
 		// $7, 9min prep time, prep 2 at same time
 	}
+	
 }
 
 class Fries extends FoodItem implements Kitchen{

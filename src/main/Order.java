@@ -33,6 +33,7 @@ public class Order extends Meal {
 		return this.total_price;
 	}
 	
+	
 	public int getOrderItemsSize() {
 		return this.getOrderItems().size();
 	}
@@ -52,12 +53,11 @@ public class Order extends Meal {
 	}
 
 	public void setTotalPrepTime(int cook_fries_counter, FoodItem burrito, FoodItem fries) {
-		
-		
-		int burrito_cook_counter = (int) Math.ceil((double) countItemQuantity("Burrito") / burrito.getMaxSimultaneousPrep());
+		int burritos_to_prep =  countItemQuantity("Burrito") + getMealItemsSize();
+		int burrito_cook_counter =  (int) Math.ceil((double) burritos_to_prep / burrito.getMaxSimultaneousPrep());
 		
 		// Checks which counter is higher to get the correct total prep time
-		if (burrito_cook_counter > cook_fries_counter) {
+		if (burrito_cook_counter >= cook_fries_counter) {
 			this.total_prep_time = burrito_cook_counter	* burrito.getPrepTime();
 	
 		} else {
@@ -95,16 +95,15 @@ public class Order extends Meal {
 		};
 
 		// Add quantity of meals to item quantity
-		quantity += getMealItemsSize();
+//		quantity += getMealItemsSize();
 
 		return quantity;
 	}
 
 	public void printOrderTotal() {
 		// Show order info with inclusion of meal
-		int meal_quantity = getMealItemsSize();
-		int[] items_quantity = { countItemQuantity("Burrito") - meal_quantity,
-				countItemQuantity("Fries") - meal_quantity, countItemQuantity("Soda") - meal_quantity, meal_quantity };
+		int[] items_quantity = { countItemQuantity("Burrito"),
+				countItemQuantity("Fries"), countItemQuantity("Soda"), getMealItemsSize() };
 
 		String[] item_names = { "Burrito", "Fries", "Soda", "Meal" };
 
