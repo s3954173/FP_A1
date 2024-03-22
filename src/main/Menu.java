@@ -13,15 +13,13 @@ public class Menu {
 	public static void main(String[] args) {
 		// Instantiate FoodItem, Meal, Orders and Warming Tray objects
 		char menu_input = 'e';
-//		ArrayList<Order> orders = new ArrayList<Order>();
 		FoodItem burrito = new Burrito();
 		FoodItem fries = new Fries();
 		FoodItem soda = new Soda();
 		Meal meal = new Meal();
 		Queue<FoodItem> warming_tray = new LinkedList<FoodItem>();
 		SalesReport sales_report = new SalesReport();
-		
-		
+
 		// Console Menu Start and instantiate menu_input to create While Loop
 		printTitle();
 		while (menu_input != 'd') {
@@ -32,14 +30,39 @@ public class Menu {
 				break;
 			// Show Sales Report
 			case 'b':
-				
+
 				sales_report.printSalesReport(warming_tray.size());
 				System.exit(0);
 				break;
 			// Update prices
 			case 'c':
-				// TODO Create Update Prices Method
+				Object updated_item = updatePrice(burrito, fries, soda, meal);
+				
+				if (updated_item instanceof FoodItem) {
+					Meal new_meal = new Meal();
+					if (updated_item instanceof Burrito) {
+						burrito = (FoodItem) updated_item;
+						new_meal.updateItem(burrito);
+					}
+					else if (updated_item instanceof Fries){
+						fries = (FoodItem) updated_item;
+						new_meal.updateItem(fries);
+
+					}
+					else if (updated_item instanceof Soda){
+						soda = (FoodItem) updated_item;
+						new_meal.updateItem(soda);
+					}
+					new_meal.setTotalPrice();
+					meal = new_meal;
+					System.out.printf("The unit price of Meals has also been updated in response.\n New meal price is: $%.2f\n", new_meal.getTotalPrice());
+				}
+				
+				else if (updated_item instanceof Meal) {
+					meal = (Meal) updated_item;
+				}
 				break;
+			
 			// Exit (End Program)
 			case 'd':
 				System.out.println("Thank you for using Burrito King!");
@@ -50,11 +73,6 @@ public class Menu {
 	}
 
 	// Static Methods for Console print outs
-	public static void printTitle() {
-		System.out.println("=".repeat(20));
-		System.out.println("Burrito King");
-		System.out.println("=".repeat(20));
-	}
 
 	public static char menuOptions() {
 		// Create Scanner Object and show menu Options
@@ -85,8 +103,8 @@ public class Menu {
 
 	}
 
-	public static Order orderFood(Queue<FoodItem> warming_tray, FoodItem burrito, FoodItem fries, FoodItem soda, Meal meal) {
-
+	public static Order orderFood(Queue<FoodItem> warming_tray, FoodItem burrito, FoodItem fries, FoodItem soda,
+			Meal meal) {
 
 		Order order = new Order();
 		int user_choice = -1;
@@ -112,7 +130,7 @@ public class Menu {
 					break;
 				case 2:
 					food_quantity = chooseFoodAmount(fries.getName());
-					
+
 					// Will either cook new fries or grab fries the warming tray
 					cook_fries_counter += Fries.prepFries(fries, warming_tray, order, food_quantity);
 
@@ -132,14 +150,14 @@ public class Menu {
 					break;
 				case 4:
 					food_quantity = chooseFoodAmount("Meal");
-					
+
 					// Cook new fries if warming tray doesn't have enough
 					cook_fries_counter += Fries.prepFries(fries, warming_tray, order, food_quantity);
 					System.out.println("Counter: " + cook_fries_counter);
 
 					// Add meal to order and remove fries from warming tray
 					for (int i = 0; i < food_quantity; i++) {
-			            warming_tray.remove(fries);
+						warming_tray.remove(fries);
 						order.addMeal(meal);
 					}
 					System.out.printf("%d serves of fries left for next order\n", warming_tray.size());
@@ -221,6 +239,13 @@ public class Menu {
 		return quantity;
 	}
 
+	// Menu Options Print Methods
+	public static void printTitle() {
+		System.out.println("=".repeat(20));
+		System.out.println("Burrito King");
+		System.out.println("=".repeat(20));
+	}
+
 	public static void printMenuOptions() {
 		System.out.printf("%3s\n", "a) Order");
 		System.out.printf("%3s\n", "b) Show Sales report");
@@ -238,37 +263,7 @@ public class Menu {
 		System.out.printf("%3s\n", "5. No More");
 		System.out.print("Please select: ");
 	}
-	
-//	public static void printSalesReport(ArrayList<Order> orders,  int leftover_fries ) {
-//		// Initialise Sales report data structure
-//		HashMap<String, Pair<Integer, Float>> foodDictionary = new HashMap<>();
-//		foodDictionary.put("Burritos" , 0, 0);
-//		foodDictionary.put("Fries" , 0, 0);
-//		foodDictionary.put("Soda" , 0, 0);
-//
-//	
-//		for (Map.Entry<String, Integer, Float> entry : foodDictionary.entrySet()) {
-//			String foodName = entry.getKey();
-//            int quantity = entry.getValue()[0];
-//            float total_price = entry.getValue()[1];
-//            
-//            for (Order order: orders) {
-//            	for (FoodItem item: order.getOrderItems()) {
-//            		if (item.getName().equals(foodName)) {
-//            			quantity++;
-//            		}
-//            	}
-//            }
-//		}
-//		
-//		// Add in Meal counter for new iteration
-//		foodDictionary.put("Meal" , 0);
-//		System.out.printf("Unsold Serves of Fries: %d\n\n", leftover_fries);
-//		System.out.println("Total Sales:");
-//		
-//		
-//	}
-	
+
 	public static void printUpdateOptions() {
 		System.out.println("> Select the food item to update the price");
 		System.out.printf("%3s\n", "1. Burrito");
@@ -278,58 +273,64 @@ public class Menu {
 		System.out.printf("%3s\n", "5. Exit");
 		System.out.print("Please select: ");
 	}
-	
-	public static Object updatePrice() {
+
+	public static Object updatePrice(FoodItem burrito, FoodItem fries, FoodItem soda, Meal meal) {
+		// TODO: Remove new Object()
+//		Object updated_item = new Object();
+
 		int user_choice = -1;
 
 		Scanner menu_input = new Scanner(System.in);
+		printUpdateOptions();
+
 		do {
-			printUpdateOptions();
-		// Take user input and error handling for non-int inputs
-					try {
-						user_choice = menu_input.nextInt();
-						
-						// TODO Optimise code
-						switch (user_choice) {
-						case 1:
-							System.out.print("Please enter new price: ");
-							
-							
-							break;
-						case 2:
-							
-							
-							System.out.printf("%d serves of fries left for next order\n", warming_tray.size());
+			// Take user input and error handling for non-int inputs
+			try {
+				user_choice = menu_input.nextInt();
+				// TODO Optimise code
+				switch (user_choice) {
+				case 1:
+					System.out.print("Please enter new price: ");
+					FoodItem updated_burrito = new Burrito(menu_input.nextFloat());
+					System.out.printf("The unit price of burrito is updated to $%.2f\n", updated_burrito.getPrice());
+					return updated_burrito;
 
-							break;
-						case 3:
-							
-							break;
-						case 4:
-							
-							break;
-						case 5:
-							break;
-						default:
-							System.out.println("Please provide an option between 1-5");
-						}
-					} catch (InputMismatchException e) {
-						// Handle the case where the input is not an integer
-						System.out.println("Please enter a valid integer");
-						menu_input.next(); // Clear the invalid input from the scanner
-					}
+				case 2:
+					System.out.print("Please enter new price: ");
+					FoodItem updated_fries = new Fries(menu_input.nextFloat());
+					System.out.printf("The unit price of fries is updated to $%.2f\n", updated_fries.getPrice());
+					return updated_fries;
 
-				} while (user_choice != 5);
-	}
-	
-	public static float newPrice( ) {
-		Scanner menu_input = new Scanner(System.in);
+				case 3:
+					System.out.print("Please enter new price: ");
+					FoodItem updated_soda = new Soda(menu_input.nextFloat());
+					System.out.printf("The unit price of soda is updated to $%.2f\n", updated_soda.getPrice());
+					return updated_soda;
+					
+				case 4:
+					System.out.print("Please enter new discount amount to be applied: ");
+					Meal updated_meal = new Meal(menu_input.nextFloat());
+					System.out.printf("The discount price of meal is updated to $%.2f\n", updated_meal.getDiscount());
+					return updated_meal;
+					
+				case 5:
+					return null;
+					
+				default:
+					System.out.println("Please provide an option between 1-5");
+					break;
+				}
+			} catch (InputMismatchException e) {
+				// Handle the case where the input is not an integer
+				System.out.println("Please enter a valid integer");
+				menu_input.next(); // Clear the invalid input from the scanner
+			}
+
+		} while ((user_choice < 1) && (user_choice > 5));
 		
-		float new_price = menu_input.nextFloat();
-		return new_price;
+		return null;
+
 	}
-	
-	
 
 
 }

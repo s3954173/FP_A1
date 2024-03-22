@@ -25,7 +25,7 @@ public abstract class FoodItem {
 		this.max_simultaneous_prep = maxSimultaneousPrep;
 	}
 	
-	
+
 	// GETTERS
 	public String getName() {
 		return this.name;
@@ -79,7 +79,12 @@ class Burrito extends FoodItem {
 	public Burrito() {
 		super("Burrito", 7.0f, 9, 2);
 		// $7, 9min prep time, prep 2 at same time
-	}
+	};
+	
+	public Burrito(float price) {
+		super("Burrito", price, 9, 2);
+
+	};
 	
 }
 
@@ -87,7 +92,11 @@ class Fries extends FoodItem implements Kitchen{
 	public Fries() {
 		super("Fries", 4.0f, 8, 5);
 		// $4, 8min prep time, prep 5 at same time
-	}
+	};
+	
+	public Fries(float price) {
+		super("Fries", price, 8, 5);
+	};
 	
 	
 	@Override
@@ -119,6 +128,10 @@ class Soda extends FoodItem{
 	public Soda() {
 		super("Soda", 2.50f);
 		// $2.50
+	}
+	
+	public Soda(float price) {
+		super("Soda", price);
 	}
 	
 }

@@ -41,7 +41,7 @@ public class SalesReport {
 			total_price += order.getItemTotalPrice(food_name);
 		}
 
-        System.out.printf("%-10s:%-5d $%.2f\n", food_name, quantity, total_price);
+        System.out.printf("%-10s%-5d $%.2f\n", food_name + ":", quantity, total_price);
 		
 		return quantity;
 
@@ -55,7 +55,7 @@ public class SalesReport {
 			quantity += order.getMealItemsSize();
 			total_price += order.getMealsTotalPrice();
 		}
-        System.out.printf("%-10s:%-5d $%.2f\n", "Meals", quantity, total_price);
+        System.out.printf("%-10s%-5d $%.2f\n", "Meals:", quantity, total_price);
 		
 		return quantity;
 
@@ -66,7 +66,7 @@ public class SalesReport {
 		float total_price = 0;
 		
 		// Leftover Fries
-		System.out.printf("Unsold Serves of Fries: %d\n", unsold_fries);
+		System.out.printf("Unsold Serves of Fries: %d\n\n", unsold_fries);
 		
 		// Burritos, Fries, Soda, Meal Info
 		total_quantity+=printItemInfo("Burrito");
@@ -80,9 +80,9 @@ public class SalesReport {
 		
 		
 		// Total Sales Quantity and Price
-		System.out.println("-".repeat(20));
-        System.out.printf("%-15d $%.2f\n", total_quantity, total_price);
-		System.out.println("-".repeat(20));
+		System.out.println("-".repeat(25));
+        System.out.printf("%-10s%-5d $%.2f\n", "", total_quantity, total_price);
+		System.out.println("-".repeat(25));
 
 	}
 

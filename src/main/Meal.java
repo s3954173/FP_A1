@@ -2,7 +2,7 @@ package main;
 
 public class Meal {
 	private FoodItem[] items;
-	private int discount;
+	private float discount;
 	private float total_price;
 	
 	//CONSTRUCTOR
@@ -18,14 +18,24 @@ public class Meal {
 		this.total_price = (burrito.getPrice() + fries.getPrice() + soda.getPrice()) - getDiscount();
 	}
 	
-	// TODO: Create 2nd Constructor??
+	public Meal(float discount) {
+		// Instantiate Meal Items
+		Burrito burrito = new Burrito();
+        Fries fries = new Fries();
+        Soda soda = new Soda();
+        
+        // Set Meal attributes
+        this.items = new FoodItem[]{burrito, fries, soda};
+		this.discount = discount;
+		this.total_price = (burrito.getPrice() + fries.getPrice() + soda.getPrice()) - getDiscount();
+	}
 	
 	// GETTERS
 	public FoodItem[] getItems() {
         return this.items;
     } 
 	
-	public int getDiscount() {
+	public float getDiscount() {
         return this.discount;
     }
 	
@@ -34,7 +44,7 @@ public class Meal {
     }
 	
 	// SETTERS
-	public void setDiscount(int discount) {
+	public void setDiscount(float discount) {
 		this.discount = discount;
 	}
 	
@@ -47,6 +57,19 @@ public class Meal {
 		};
 		
 		this.total_price = total_price - this.getDiscount();
+	}
+	
+	// MUTATOR
+	public void updateItem(FoodItem item) {
+		if (item instanceof Burrito) {
+			this.getItems()[0] = item;
+		}
+		else if (item instanceof Fries) {
+			this.getItems()[1] = item;
+		}
+		else if (item instanceof Soda) {
+			this.getItems()[2] = item;
+		}
 	}
 
 }
