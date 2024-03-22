@@ -41,7 +41,28 @@ public class Order extends Meal {
 	public int getMealItemsSize() {
 		return this.getMeals().size();
 	}
-	//TODO Create method to get array sizes of items and meals
+	
+	// Return total price for a specific food item
+	public float getItemTotalPrice(String food_name) {
+		float total_item_price = 0;
+		for (FoodItem item: getOrderItems()) {
+			if (item.getName().equals(food_name)) {
+				total_item_price += item.getPrice();
+			}
+		}
+		
+		return total_item_price;
+	} 
+	
+	// Return total price of the meals array
+	public float getMealsTotalPrice() {
+		float total_meals_price = 0;
+		if (getMealItemsSize() > 0) {
+			total_meals_price = getMealItemsSize() * this.getMeals().get(0).getTotalPrice();
+		}
+		return total_meals_price; 
+		
+	}
 
 	// SETTERS
 	public void addItem(FoodItem item) {

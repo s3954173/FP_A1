@@ -15,7 +15,7 @@ public class Meal {
         // Set Meal attributes
         this.items = new FoodItem[]{burrito, fries, soda};
 		this.discount = 3;
-		this.total_price = 10.5f;
+		this.total_price = (burrito.getPrice() + fries.getPrice() + soda.getPrice()) - getDiscount();
 	}
 	
 	// TODO: Create 2nd Constructor??
@@ -34,8 +34,6 @@ public class Meal {
     }
 	
 	// SETTERS
-	// TODO Add setter for items???
-	
 	public void setDiscount(int discount) {
 		this.discount = discount;
 	}
