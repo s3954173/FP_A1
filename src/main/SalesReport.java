@@ -1,7 +1,6 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class SalesReport {
 	private ArrayList<Order> orders;

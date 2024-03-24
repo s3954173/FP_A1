@@ -1,11 +1,8 @@
 package main;
 
 import java.util.Scanner;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 
 public class Menu {
@@ -108,6 +105,7 @@ public class Menu {
 
 		Order order = new Order();
 		int user_choice = -1;
+		boolean has_ordered = false;
 
 		// Move this variable somewhere else
 		int cook_fries_counter = 0;
@@ -127,6 +125,8 @@ public class Menu {
 					for (int i = 0; i < food_quantity; i++) {
 						order.addItem(burrito);
 					}
+					has_ordered = true;
+
 					break;
 				case 2:
 					food_quantity = chooseFoodAmount(fries.getName());
@@ -140,6 +140,7 @@ public class Menu {
 						order.addItem(fries);
 					}
 					System.out.printf("%d serves of fries left for next order\n", warming_tray.size());
+					has_ordered = true;
 
 					break;
 				case 3:
@@ -147,23 +148,28 @@ public class Menu {
 					for (int i = 0; i < food_quantity; i++) {
 						order.addItem(soda);
 					}
+					has_ordered = true;
+
 					break;
 				case 4:
 					food_quantity = chooseFoodAmount("Meal");
 
 					// Cook new fries if warming tray doesn't have enough
 					cook_fries_counter += Fries.prepFries(fries, warming_tray, order, food_quantity);
-					System.out.println("Counter: " + cook_fries_counter);
 
 					// Add meal to order and remove fries from warming tray
 					for (int i = 0; i < food_quantity; i++) {
 						warming_tray.remove(fries);
 						order.addMeal(meal);
 					}
-					System.out.printf("%d serves of fries left for next order\n", warming_tray.size());
+					System.out.printf("%d serves of fries left for next order\n\n", warming_tray.size());
+					has_ordered = true;
 
 					break;
 				case 5:
+					if (!has_ordered) {
+						System.out.println("Please order at least 1 item.");
+					}
 					break;
 				default:
 					System.out.println("Please provide an option between 1-5");
@@ -173,8 +179,10 @@ public class Menu {
 				System.out.println("Please enter a valid integer");
 				menu_input.next(); // Clear the invalid input from the scanner
 			}
+			
+			System.out.println();
 
-		} while (user_choice != 5);
+		} while (user_choice != 5 && !has_ordered);
 
 		// Finalise Order Details
 		order.setTotalPrice();
@@ -247,30 +255,32 @@ public class Menu {
 	}
 
 	public static void printMenuOptions() {
-		System.out.printf("%3s\n", "a) Order");
-		System.out.printf("%3s\n", "b) Show Sales report");
-		System.out.printf("%3s\n", "c) Update prices");
-		System.out.printf("%3s\n", "d) Exit");
+		System.out.println("");
+		System.out.printf("%-3s\n", "a) Order");
+		System.out.printf("%-3s\n", "b) Show Sales report");
+		System.out.printf("%-3s\n", "c) Update prices");
+		System.out.printf("%-3s\n", "d) Exit");
 		System.out.print("Please select: ");
 	}
 
 	public static void printOrderOptions() {
+		System.out.println("");
 		System.out.println("> Select the food item");
-		System.out.printf("%3s\n", "1. Burrito");
-		System.out.printf("%3s\n", "2. Fries");
-		System.out.printf("%3s\n", "3. Soda");
-		System.out.printf("%3s\n", "4. Meal");
-		System.out.printf("%3s\n", "5. No More");
+		System.out.printf("%-3s\n", "1. Burrito");
+		System.out.printf("%-3s\n", "2. Fries");
+		System.out.printf("%-3s\n", "3. Soda");
+		System.out.printf("%-3s\n", "4. Meal");
+		System.out.printf("%-3s\n", "5. No More");
 		System.out.print("Please select: ");
 	}
 
 	public static void printUpdateOptions() {
 		System.out.println("> Select the food item to update the price");
-		System.out.printf("%3s\n", "1. Burrito");
-		System.out.printf("%3s\n", "2. Fries");
-		System.out.printf("%3s\n", "3. Soda");
-		System.out.printf("%3s\n", "4. Meal");
-		System.out.printf("%3s\n", "5. Exit");
+		System.out.printf("%-3s\n", "1. Burrito");
+		System.out.printf("%-3s\n", "2. Fries");
+		System.out.printf("%-3s\n", "3. Soda");
+		System.out.printf("%-3s\n", "4. Meal");
+		System.out.printf("%-3s\n", "5. Exit");
 		System.out.print("Please select: ");
 	}
 
