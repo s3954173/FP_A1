@@ -34,32 +34,32 @@ public class Menu {
 			// Update prices
 			case 'c':
 				Object updated_item = updatePrice(burrito, fries, soda, meal);
-				
+
 				if (updated_item instanceof FoodItem) {
 					Meal new_meal = new Meal();
 					if (updated_item instanceof Burrito) {
 						burrito = (FoodItem) updated_item;
 						new_meal.updateItem(burrito);
-					}
-					else if (updated_item instanceof Fries){
+					} else if (updated_item instanceof Fries) {
 						fries = (FoodItem) updated_item;
 						new_meal.updateItem(fries);
 
-					}
-					else if (updated_item instanceof Soda){
+					} else if (updated_item instanceof Soda) {
 						soda = (FoodItem) updated_item;
 						new_meal.updateItem(soda);
 					}
 					new_meal.setTotalPrice();
 					meal = new_meal;
-					System.out.printf("The unit price of Meals has also been updated in response.\n New meal price is: $%.2f\n", new_meal.getTotalPrice());
+					System.out.printf(
+							"The unit price of Meals has also been updated in response.\n New meal price is: $%.2f\n",
+							new_meal.getTotalPrice());
 				}
-				
+
 				else if (updated_item instanceof Meal) {
 					meal = (Meal) updated_item;
 				}
 				break;
-			
+
 			// Exit (End Program)
 			case 'd':
 				System.out.println("Thank you for using Burrito King!");
@@ -179,10 +179,8 @@ public class Menu {
 				System.out.println("Please enter a valid integer");
 				menu_input.next(); // Clear the invalid input from the scanner
 			}
-			
-			System.out.println();
 
-		} while (user_choice != 5 && !has_ordered);
+		} while ((user_choice != 5) || !has_ordered);
 
 		// Finalise Order Details
 		order.setTotalPrice();
@@ -285,8 +283,6 @@ public class Menu {
 	}
 
 	public static Object updatePrice(FoodItem burrito, FoodItem fries, FoodItem soda, Meal meal) {
-		// TODO: Remove new Object()
-//		Object updated_item = new Object();
 
 		int user_choice = -1;
 
@@ -300,32 +296,68 @@ public class Menu {
 				// TODO Optimise code
 				switch (user_choice) {
 				case 1:
-					System.out.print("Please enter new price: ");
-					FoodItem updated_burrito = new Burrito(menu_input.nextFloat());
-					System.out.printf("The unit price of burrito is updated to $%.2f\n", updated_burrito.getPrice());
+//					System.out.print("Please enter new price: ");
+//					FoodItem updated_burrito = new Burrito(menu_input.nextFloat());
+//					System.out.printf("The unit price of burrito is updated to $%.2f\n", updated_burrito.getPrice());
+
+					FoodItem updated_burrito = new Burrito();
+					updateFood(updated_burrito);
 					return updated_burrito;
 
 				case 2:
-					System.out.print("Please enter new price: ");
-					FoodItem updated_fries = new Fries(menu_input.nextFloat());
-					System.out.printf("The unit price of fries is updated to $%.2f\n", updated_fries.getPrice());
+//					System.out.print("Please enter new price: ");
+//					FoodItem updated_fries = new Fries(menu_input.nextFloat());
+//					System.out.printf("The unit price of fries is updated to $%.2f\n", updated_fries.getPrice());
+					
+					FoodItem updated_fries = new Fries();
+					updateFood(updated_fries);
 					return updated_fries;
 
 				case 3:
-					System.out.print("Please enter new price: ");
-					FoodItem updated_soda = new Soda(menu_input.nextFloat());
-					System.out.printf("The unit price of soda is updated to $%.2f\n", updated_soda.getPrice());
+//					System.out.print("Please enter new price: ");
+//					FoodItem updated_soda = new Soda(menu_input.nextFloat());
+//					System.out.printf("The unit price of soda is updated to $%.2f\n", updated_soda.getPrice());
+					
+					FoodItem updated_soda = new Soda();
+					updateFood(updated_soda);
 					return updated_soda;
-					
+
 				case 4:
-					System.out.print("Please enter new discount amount to be applied: ");
-					Meal updated_meal = new Meal(menu_input.nextFloat());
-					System.out.printf("The discount price of meal is updated to $%.2f\n", updated_meal.getDiscount());
-					return updated_meal;
+//					System.out.print("Please enter new discount amount to be applied: ");
+//					Meal updated_meal = new Meal(menu_input.nextFloat());
+//					System.out.printf("The discount price of meal is updated to $%.2f\n", updated_meal.getDiscount());
+				
+					Meal updated_meal = new Meal();
+					float new_discount = 0;
+					float original_total_price = updated_meal.getTotalPrice() + updated_meal.getDiscount();
 					
+					do {
+						try {
+							System.out.print("Please enter new discount to be applied: ");
+							new_discount = menu_input.nextFloat();
+							if (new_discount <= 0) {
+								System.out.println("Discount must be greater than $0.00");
+							}
+							else if (new_discount >= original_total_price) {
+								System.out.printf("Discount must be less than the original total price %.2f \n", original_total_price);
+							}
+							
+
+						} catch (InputMismatchException e) {
+							System.out.println("Please enter a valid amount");
+							menu_input.nextLine(); // Clear the input buffer
+						}
+					} while (new_discount <= 0 || new_discount >= original_total_price);
+					
+					updated_meal.setDiscount(new_discount);
+					updated_meal.setTotalPrice();
+					System.out.printf("The discount price of meal has been updated to $%.2f\n", updated_meal.getDiscount());
+
+					return updated_meal;
+
 				case 5:
 					return null;
-					
+
 				default:
 					System.out.println("Please provide an option between 1-5");
 					break;
@@ -336,11 +368,35 @@ public class Menu {
 				menu_input.next(); // Clear the invalid input from the scanner
 			}
 
-		} while ((user_choice < 1) && (user_choice > 5));
-		
+		} while ((user_choice < 1) || (user_choice > 5));
+
 		return null;
 
 	}
+
+	public static void updateFood(FoodItem new_item) {
+		Scanner menu_input = new Scanner(System.in);
+		float new_price = 0;
+
+		do {
+			try {
+				System.out.print("Please enter new price: ");
+				new_price = menu_input.nextFloat();
+				if (new_price <= 0) {
+					System.out.println("Please enter a price greater than $0.00");
+				}
+
+			} catch (InputMismatchException e) {
+				System.out.println("Please enter a valid amount");
+				menu_input.nextLine(); // Clear the input buffer
+			}
+		} while (new_price <= 0);
+
+		new_item.setPrice(new_price);
+		System.out.printf("The unit price of %s is updated to $%.2f\n",new_item.getName(), new_item.getPrice());
+
+	}
+	
 
 
 }
