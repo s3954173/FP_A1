@@ -136,7 +136,7 @@ public class Menu {
 
 					// Add fries from warming_tray
 					for (int i = 0; i < food_quantity; i++) {
-						warming_tray.remove(fries);
+						warming_tray.poll();
 						order.addItem(fries);
 					}
 					System.out.printf("%d serves of fries left for next order\n", warming_tray.size());
@@ -159,7 +159,7 @@ public class Menu {
 
 					// Add meal to order and remove fries from warming tray
 					for (int i = 0; i < food_quantity; i++) {
-						warming_tray.remove(fries);
+						warming_tray.poll();
 						order.addMeal(meal);
 					}
 					System.out.printf("%d serves of fries left for next order\n\n", warming_tray.size());
