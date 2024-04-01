@@ -1,4 +1,19 @@
 # FP_A1
+# Instructions to compile the Program
+1. Set JAVA_HOME environment variable in your system
+2. Download the Burrito King console program and unzip the folder. 
+3. Open the terminal and navigate to the program's folder
+4. Compile the program using javac.
+	- e.g. cd Desktop/BurritoKing
+	- javac src/main/*.java
+5. Run the program
+	-  java -cp ./src main.Menu
+	
+## ALTERNATE METHOD TO COMPILE AND RUN PROGRAM
+1. In the program's folder run the following command if you have bash
+	- ./BurritoKing.sh
+	OR if you're on a windows system
+	- BurritoKing.bat
 
 # Key Classes
 1. Menu (Main)

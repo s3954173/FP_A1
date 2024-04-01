@@ -5,7 +5,7 @@ public class Meal {
 	private float discount;
 	private float total_price;
 	
-	//CONSTRUCTOR
+	//CONSTRUCTORS
 	public Meal() {
 		// Instantiate Meal Items
 		Burrito burrito = new Burrito();

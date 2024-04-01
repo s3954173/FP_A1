@@ -25,16 +25,19 @@ public class Menu {
 			case 'a':
 				sales_report.addOrder(orderFood(warming_tray, burrito, fries, soda, meal));
 				break;
-			// Show Sales Report
+				
+			// Print sales report and end program
 			case 'b':
-
 				sales_report.printSalesReport(warming_tray.size());
 				System.exit(0);
 				break;
+				
+				
 			// Update prices
 			case 'c':
 				Object updated_item = updatePrice(burrito, fries, soda, meal);
-
+				
+				// Update the Object Reference of the correct FoodItem
 				if (updated_item instanceof FoodItem) {
 					Meal new_meal = new Meal();
 					if (updated_item instanceof Burrito) {
@@ -71,6 +74,7 @@ public class Menu {
 
 	// Static Methods for Console print outs
 
+	// INITIAL MENU
 	public static char menuOptions() {
 		// Create Scanner Object and show menu Options
 		Scanner menu_input = new Scanner(System.in);
@@ -100,6 +104,7 @@ public class Menu {
 
 	}
 
+	// MENU OPTION B: Order
 	public static Order orderFood(Queue<FoodItem> warming_tray, FoodItem burrito, FoodItem fries, FoodItem soda,
 			Meal meal) {
 
@@ -118,7 +123,7 @@ public class Menu {
 			try {
 				user_choice = menu_input.nextInt();
 				int food_quantity = 0;
-				// TODO Optimise code
+
 				switch (user_choice) {
 				case 1:
 					food_quantity = chooseFoodAmount(burrito.getName());
@@ -215,7 +220,8 @@ public class Menu {
 
 		return order;
 	}
-
+	
+	// Food Quantity Input Method
 	public static int chooseFoodAmount(String name) {
 		Scanner quantity_input = new Scanner(System.in);
 		int quantity = 0;
@@ -245,43 +251,8 @@ public class Menu {
 		return quantity;
 	}
 
-	// Menu Options Print Methods
-	public static void printTitle() {
-		System.out.println("=".repeat(20));
-		System.out.println("Burrito King");
-		System.out.println("=".repeat(20));
-	}
 
-	public static void printMenuOptions() {
-		System.out.println("");
-		System.out.printf("%-3s\n", "a) Order");
-		System.out.printf("%-3s\n", "b) Show Sales report");
-		System.out.printf("%-3s\n", "c) Update prices");
-		System.out.printf("%-3s\n", "d) Exit");
-		System.out.print("Please select: ");
-	}
-
-	public static void printOrderOptions() {
-		System.out.println("");
-		System.out.println("> Select the food item");
-		System.out.printf("%-3s\n", "1. Burrito");
-		System.out.printf("%-3s\n", "2. Fries");
-		System.out.printf("%-3s\n", "3. Soda");
-		System.out.printf("%-3s\n", "4. Meal");
-		System.out.printf("%-3s\n", "5. No More");
-		System.out.print("Please select: ");
-	}
-
-	public static void printUpdateOptions() {
-		System.out.println("> Select the food item to update the price");
-		System.out.printf("%-3s\n", "1. Burrito");
-		System.out.printf("%-3s\n", "2. Fries");
-		System.out.printf("%-3s\n", "3. Soda");
-		System.out.printf("%-3s\n", "4. Meal");
-		System.out.printf("%-3s\n", "5. Exit");
-		System.out.print("Please select: ");
-	}
-
+	// MENU OPTION C: Update Price
 	public static Object updatePrice(FoodItem burrito, FoodItem fries, FoodItem soda, Meal meal) {
 
 		int user_choice = -1;
@@ -293,40 +264,23 @@ public class Menu {
 			// Take user input and error handling for non-int inputs
 			try {
 				user_choice = menu_input.nextInt();
-				// TODO Optimise code
 				switch (user_choice) {
 				case 1:
-//					System.out.print("Please enter new price: ");
-//					FoodItem updated_burrito = new Burrito(menu_input.nextFloat());
-//					System.out.printf("The unit price of burrito is updated to $%.2f\n", updated_burrito.getPrice());
-
 					FoodItem updated_burrito = new Burrito();
 					updateFood(updated_burrito);
 					return updated_burrito;
 
-				case 2:
-//					System.out.print("Please enter new price: ");
-//					FoodItem updated_fries = new Fries(menu_input.nextFloat());
-//					System.out.printf("The unit price of fries is updated to $%.2f\n", updated_fries.getPrice());
-					
+				case 2:					
 					FoodItem updated_fries = new Fries();
 					updateFood(updated_fries);
 					return updated_fries;
 
-				case 3:
-//					System.out.print("Please enter new price: ");
-//					FoodItem updated_soda = new Soda(menu_input.nextFloat());
-//					System.out.printf("The unit price of soda is updated to $%.2f\n", updated_soda.getPrice());
-					
+				case 3:			
 					FoodItem updated_soda = new Soda();
 					updateFood(updated_soda);
 					return updated_soda;
 
-				case 4:
-//					System.out.print("Please enter new discount amount to be applied: ");
-//					Meal updated_meal = new Meal(menu_input.nextFloat());
-//					System.out.printf("The discount price of meal is updated to $%.2f\n", updated_meal.getDiscount());
-				
+				case 4:		
 					Meal updated_meal = new Meal();
 					float new_discount = 0;
 					float original_total_price = updated_meal.getTotalPrice() + updated_meal.getDiscount();
@@ -373,7 +327,8 @@ public class Menu {
 		return null;
 
 	}
-
+	
+	// Update FoodItem price method
 	public static void updateFood(FoodItem new_item) {
 		Scanner menu_input = new Scanner(System.in);
 		float new_price = 0;
@@ -397,6 +352,41 @@ public class Menu {
 
 	}
 	
+	// Menu Options Print Methods
+	public static void printTitle() {
+		System.out.println("=".repeat(20));
+		System.out.println("Burrito King");
+		System.out.println("=".repeat(20));
+	}
 
+	public static void printMenuOptions() {
+		System.out.println("");
+		System.out.printf("%-3s\n", "a) Order");
+		System.out.printf("%-3s\n", "b) Show Sales report");
+		System.out.printf("%-3s\n", "c) Update prices");
+		System.out.printf("%-3s\n", "d) Exit");
+		System.out.print("Please select: ");
+	}
+
+	public static void printOrderOptions() {
+		System.out.println("");
+		System.out.println("> Select the food item");
+		System.out.printf("%-3s\n", "1. Burrito");
+		System.out.printf("%-3s\n", "2. Fries");
+		System.out.printf("%-3s\n", "3. Soda");
+		System.out.printf("%-3s\n", "4. Meal");
+		System.out.printf("%-3s\n", "5. No More");
+		System.out.print("Please select: ");
+	}
+
+	public static void printUpdateOptions() {
+		System.out.println("> Select the food item to update the price");
+		System.out.printf("%-3s\n", "1. Burrito");
+		System.out.printf("%-3s\n", "2. Fries");
+		System.out.printf("%-3s\n", "3. Soda");
+		System.out.printf("%-3s\n", "4. Meal");
+		System.out.printf("%-3s\n", "5. Exit");
+		System.out.print("Please select: ");
+	}
 
 }
